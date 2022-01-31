@@ -1,4 +1,5 @@
 const CrudData = require('../Models/crudModal')
+const mongoose = require('mongoose');
 
 //create
 const createStudent = {
@@ -36,14 +37,15 @@ const readAllData = {
 const updateData = {
     newUpdatedData : async (req,res) => {
         try {
-            const newStudentName = req.body.name
-            const id = req.body.id
+            const {id} = req.params;
+            const {name,standard} = req.body;
 
-                await CrudData.findById(id, (error, newUpdatedStudentName) => {
-                newUpdatedStudentName.name = newStudentName
-                newUpdatedStudentName.save()
-                res.status(200).json({msg: "Data Updated "})
-            })
+            if(!mongoose.Types.ObjectId.isValid(id)){ return res.status(404).send('No product with that id') }
+
+            const updatedProduct = await CrudData.findByIdAndUpdate(id,{name,standard},{new:true});
+            res.status(200).json(updatedProduct)
+
+               
         } catch (error) {
             res.status(500).json({msg: "Internal server error"})
             console.log(error);
