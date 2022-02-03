@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json())
 
 // local server connection
-const port = process.env.port || 3000
+const port = process.env.port || 3005
 
 // mongodb connection
 const URI = process.env.MONGO_URL
